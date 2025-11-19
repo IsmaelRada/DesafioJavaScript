@@ -1,0 +1,572 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ejercicios Refactorizados - Astronomía, Medio Ambiente y Salud</title>
+    <link rel="stylesheet" href="styles/styles.css">
+</head>
+<body>
+<script src="JavaScript/main.js"></script>
+    <header>
+        <h1>Ejercicios Refactorizados</h1>
+        <p class="subtitle">Astronomía, Medio Ambiente y Salud</p>
+    </header>
+    
+    <div class="container">
+        <!-- Selector de área -->
+        <div class="area-selector">
+            <button id="astronomy-btn" class="area-btn active">Astronomía</button>
+            <button id="environment-btn" class="area-btn">Medio Ambiente</button>
+            <button id="health-btn" class="area-btn">Salud</button>
+        </div>
+        
+        <!-- Menú principal ASTRONOMÍA -->
+        <div id="astronomy-menu" class="menu">
+            <div class="menu-item astronomy-item" data-exercise="astronomy-1">
+                <h3>Clasificación de Brillo Estelar</h3>
+                <p>Ingresa magnitud aparente y clasifica estrellas según su brillo</p>
+            </div>
+            <div class="menu-item astronomy-item" data-exercise="astronomy-2">
+                <h3>Distancias de Planetas</h3>
+                <p>Registra distancias planetarias y calcula promedios</p>
+            </div>
+            <div class="menu-item astronomy-item" data-exercise="astronomy-3">
+                <h3>Contar Cráteres Lunares</h3>
+                <p>Cuenta cráteres que superan los 50 km de diámetro</p>
+            </div>
+            <div class="menu-item astronomy-item" data-exercise="astronomy-4">
+                <h3>Identificar Cuerpo Celeste</h3>
+                <p>Identifica tipos de cuerpos celestes por código</p>
+            </div>
+            <div class="menu-item astronomy-item" data-exercise="astronomy-5">
+                <h3>Registro de Niveles de Luz</h3>
+                <p>Registra valores de lux y detecta condiciones de noche profunda</p>
+            </div>
+        </div>
+        
+        <!-- Menú principal MEDIO AMBIENTE -->
+        <div id="environment-menu" class="menu hidden">
+            <div class="menu-item environment-item" data-exercise="environment-1">
+                <h3>Calidad del Aire (AQI)</h3>
+                <p>Clasifica la calidad del aire según el índice AQI</p>
+            </div>
+            <div class="menu-item environment-item" data-exercise="environment-2">
+                <h3>Niveles de Ruido Ambiental</h3>
+                <p>Registra mediciones de ruido y calcula promedios</p>
+            </div>
+            <div class="menu-item environment-item" data-exercise="environment-3">
+                <h3>Focos de Calor (Incendios)</h3>
+                <p>Cuenta posibles focos de incendio por temperatura</p>
+            </div>
+            <div class="menu-item environment-item" data-exercise="environment-4">
+                <h3>Clasificación de Residuos</h3>
+                <p>Clasifica tipos de residuos por código</p>
+            </div>
+            <div class="menu-item environment-item" data-exercise="environment-5">
+                <h3>Monitoreo de Niveles del Río</h3>
+                <p>Registra niveles fluviales y alerta sobre inundaciones</p>
+            </div>
+        </div>
+        
+        <!-- Menú principal SALUD -->
+        <div id="health-menu" class="menu hidden">
+            <div class="menu-item health-item" data-exercise="health-1">
+                <h3>Clasificación de Presión Arterial</h3>
+                <p>Clasifica la presión arterial según valores sistólicos y diastólicos</p>
+            </div>
+            <div class="menu-item health-item" data-exercise="health-2">
+                <h3>Temperatura de Pacientes</h3>
+                <p>Registra temperaturas de pacientes y calcula promedios</p>
+            </div>
+            <div class="menu-item health-item" data-exercise="health-3">
+                <h3>Pacientes con Fiebre</h3>
+                <p>Cuenta pacientes con temperatura igual o superior a 38°C</p>
+            </div>
+            <div class="menu-item health-item" data-exercise="health-4">
+                <h3>Clasificación TRIAGE</h3>
+                <p>Clasifica pacientes según sistema de triage</p>
+            </div>
+            <div class="menu-item health-item" data-exercise="health-5">
+                <h3>Mediciones de Saturación SpO2</h3>
+                <p>Registra niveles de saturación de oxígeno</p>
+            </div>
+        </div>
+        
+        <!-- CONTENEDORES DE EJERCICIOS DE ASTRONOMÍA -->
+        
+        <!-- Astronomía 1: Clasificación de brillo estelar -->
+        <div id="astronomy-1" class="exercise-container">
+            <div class="exercise-header">
+                <h2 class="exercise-title">Clasificación de Brillo Estelar</h2>
+                <button class="back-button">Volver al Menú</button>
+            </div>
+            <div class="exercise-content">
+                <div class="input-group">
+                    <label for="magnitude">Magnitud aparente de la estrella:</label>
+                    <input type="number" id="magnitude" step="0.1" placeholder="Ej: -1.5, 2.0, 6.5">
+                </div>
+                <button id="classify-magnitude">Clasificar Brillo</button>
+                
+                <div class="result-container">
+                    <div class="result-title">Resultado:</div>
+                    <div class="result-content" id="magnitude-result">Esperando clasificación...</div>
+                </div>
+                
+                <div class="plus-feature">
+                    <div class="plus-title">Plus: Visualización de Escala de Magnitud</div>
+                    <p>Se muestra una representación visual de dónde se encuentra la estrella en la escala de magnitud.</p>
+                    <div id="magnitude-scale" style="margin-top: 1rem; height: 30px; background: linear-gradient(to right, #ffeb3b, #ff9800, #ff5722, #795548, #3f51b5); border-radius: 5px; position: relative;">
+                        <div id="magnitude-marker" style="position: absolute; top: -5px; width: 10px; height: 40px; background: red; border-radius: 5px; display: none;"></div>
+                    </div>
+                    <div style="display: flex; justify-content: space-between; margin-top: 5px; font-size: 0.8rem;">
+                        <span>-2 (Ext. Brillante)</span>
+                        <span>0</span>
+                        <span>2 (Brillante)</span>
+                        <span>4 (Débil)</span>
+                        <span>6 (No visible)</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Astronomía 2: Registrar distancias de planetas -->
+        <div id="astronomy-2" class="exercise-container">
+            <div class="exercise-header">
+                <h2 class="exercise-title">Registrar Distancias de Planetas</h2>
+                <button class="back-button">Volver al Menú</button>
+            </div>
+            <div class="exercise-content">
+                <div class="input-group">
+                    <label for="planet-count">Número de planetas a registrar:</label>
+                    <input type="number" id="planet-count" min="1" max="20" value="5">
+                </div>
+                <button id="setup-planets">Configurar Registro</button>
+                
+                <div id="planet-inputs" style="margin-top: 1.5rem;"></div>
+                
+                <div class="result-container">
+                    <div class="result-title">Resultado:</div>
+                    <div class="result-content" id="planet-result">Esperando datos...</div>
+                </div>
+                
+                <div class="plus-feature">
+                    <div class="plus-title">Plus: Visualización de Distancias Comparativas</div>
+                    <p>Se muestra una representación gráfica de las distancias registradas para comparación visual.</p>
+                    <div id="planet-chart" style="margin-top: 1rem; height: 200px; display: flex; align-items: flex-end; justify-content: space-around; border: 1px solid #ddd; padding: 10px; background: #f9f9f9;"></div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Astronomía 3: Contar cráteres lunares grandes -->
+        <div id="astronomy-3" class="exercise-container">
+            <div class="exercise-header">
+                <h2 class="exercise-title">Contar Cráteres Lunares Grandes</h2>
+                <button class="back-button">Volver al Menú</button>
+            </div>
+            <div class="exercise-content">
+                <div class="input-group">
+                    <label for="crater-diameter">Diámetro del cráter (km):</label>
+                    <input type="number" id="crater-diameter" min="0" step="0.1" placeholder="Ingresa 0 para terminar">
+                </div>
+                <button id="add-crater">Agregar Cráter</button>
+                <button id="finish-craters" style="background-color: #e74c3c;">Finalizar Registro</button>
+                
+                <div class="result-container">
+                    <div class="result-title">Cráteres Registrados:</div>
+                    <div class="result-content" id="craters-list">No se han registrado cráteres</div>
+                </div>
+                
+                <div class="result-container">
+                    <div class="result-title">Resultado:</div>
+                    <div class="result-content" id="craters-result">Esperando datos...</div>
+                </div>
+                
+                <div class="plus-feature">
+                    <div class="plus-title">Plus: Mapa de Distribución de Cráteres</div>
+                    <p>Visualización de la distribución de cráteres por tamaño en un mapa lunar simulado.</p>
+                    <div id="moon-map" style="margin-top: 1rem; height: 200px; background: #7f8c8d; border-radius: 50%; position: relative; overflow: hidden;"></div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Astronomía 4: Identificar cuerpo celeste -->
+        <div id="astronomy-4" class="exercise-container">
+            <div class="exercise-header">
+                <h2 class="exercise-title">Identificar Cuerpo Celeste</h2>
+                <button class="back-button">Volver al Menú</button>
+            </div>
+            <div class="exercise-content">
+                <div class="input-group">
+                    <label for="celestial-code">Código del cuerpo celeste (1-5):</label>
+                    <select id="celestial-code">
+                        <option value="1">1 - Estrella</option>
+                        <option value="2">2 - Planeta</option>
+                        <option value="3">3 - Cometa</option>
+                        <option value="4">4 - Asteroide</option>
+                        <option value="5">5 - Galaxia</option>
+                    </select>
+                </div>
+                <button id="identify-celestial">Identificar Cuerpo Celeste</button>
+                
+                <div class="result-container">
+                    <div class="result-title">Resultado:</div>
+                    <div class="result-content" id="celestial-result">Esperando identificación...</div>
+                </div>
+                
+                <div class="plus-feature">
+                    <div class="plus-title">Plus: Galería de Imágenes</div>
+                    <p>Muestra una imagen representativa del cuerpo celeste identificado.</p>
+                    <div id="celestial-image" style="margin-top: 1rem; text-align: center;">
+                        <img id="celestial-img" src="" alt="Imagen del cuerpo celeste" style="max-width: 100%; max-height: 200px; display: none;">
+                        <p id="image-caption" style="margin-top: 0.5rem; font-style: italic;"></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Astronomía 5: Registro de niveles de luz -->
+        <div id="astronomy-5" class="exercise-container">
+            <div class="exercise-header">
+                <h2 class="exercise-title">Registro de Niveles de Luz (lux)</h2>
+                <button class="back-button">Volver al Menú</button>
+            </div>
+            <div class="exercise-content">
+                <div class="input-group">
+                    <label for="light-level">Nivel de luz (lux):</label>
+                    <input type="number" id="light-level" min="0" step="0.1" placeholder="Ej: 0.1, 5.0, 100">
+                </div>
+                <button id="add-light">Registrar Nivel de Luz</button>
+                
+                <div class="result-container">
+                    <div class="result-title">Registro de Niveles de Luz:</div>
+                    <div class="result-content" id="light-list">No se han registrado niveles de luz</div>
+                </div>
+                
+                <div class="result-container">
+                    <div class="result-title">Resultado:</div>
+                    <div class="result-content" id="light-result">Esperando datos...</div>
+                </div>
+                
+                <div class="plus-feature">
+                    <div class="plus-title">Plus: Gráfico de Evolución Temporal</div>
+                    <p>Visualización de la evolución de los niveles de luz a lo largo del tiempo.</p>
+                    <div id="light-chart" style="margin-top: 1rem; height: 200px; border: 1px solid #ddd; padding: 10px; background: #f9f9f9; position: relative;">
+                        <div id="light-timeline" style="display: flex; align-items: flex-end; height: 100%;"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- CONTENEDORES DE EJERCICIOS DE MEDIO AMBIENTE -->
+        
+        <!-- Medio Ambiente 1: Calidad del aire (AQI) -->
+        <div id="environment-1" class="exercise-container">
+            <div class="exercise-header">
+                <h2 class="exercise-title">Calidad del Aire (AQI)</h2>
+                <button class="back-button">Volver al Menú</button>
+            </div>
+            <div class="exercise-content">
+                <div class="input-group">
+                    <label for="aqi-value">Valor del Índice de Calidad del Aire (AQI):</label>
+                    <input type="number" id="aqi-value" min="0" placeholder="Ej: 45, 120, 250">
+                </div>
+                <button id="check-aqi">Verificar Calidad del Aire</button>
+                
+                <div class="result-container">
+                    <div class="result-title">Resultado:</div>
+                    <div class="result-content" id="aqi-result">Esperando verificación...</div>
+                </div>
+                
+                <div class="plus-feature">
+                    <div class="plus-title">Plus: Recomendaciones de Salud</div>
+                    <p>Se proporcionan recomendaciones específicas según el nivel de calidad del aire.</p>
+                    <div id="aqi-recommendations" class="result-content" style="margin-top: 1rem;"></div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Medio Ambiente 2: Niveles de ruido ambiental -->
+        <div id="environment-2" class="exercise-container">
+            <div class="exercise-header">
+                <h2 class="exercise-title">Niveles de Ruido Ambiental</h2>
+                <button class="back-button">Volver al Menú</button>
+            </div>
+            <div class="exercise-content">
+                <div class="input-group">
+                    <label for="noise-count">Número de mediciones de ruido:</label>
+                    <input type="number" id="noise-count" min="1" max="20" value="5">
+                </div>
+                <button id="setup-noise">Configurar Mediciones</button>
+                
+                <div id="noise-inputs" style="margin-top: 1.5rem;"></div>
+                
+                <div class="result-container">
+                    <div class="result-title">Resultado:</div>
+                    <div class="result-content" id="noise-result">Esperando datos...</div>
+                </div>
+                
+                <div class="plus-feature">
+                    <div class="plus-title">Plus: Análisis de Impacto en Salud</div>
+                    <p>Evaluación del impacto potencial en la salud según los niveles de ruido registrados.</p>
+                    <div id="noise-impact" class="result-content" style="margin-top: 1rem;"></div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Medio Ambiente 3: Focos de calor (incendios) -->
+        <div id="environment-3" class="exercise-container">
+            <div class="exercise-header">
+                <h2 class="exercise-title">Focos de Calor (Posibles Incendios)</h2>
+                <button class="back-button">Volver al Menú</button>
+            </div>
+            <div class="exercise-content">
+                <div class="input-group">
+                    <label for="heat-temperature">Temperatura del foco de calor (°C):</label>
+                    <input type="number" id="heat-temperature" min="0" step="0.1" placeholder="Ingresa 0 para terminar">
+                </div>
+                <button id="add-heat">Agregar Temperatura</button>
+                <button id="finish-heat" style="background-color: #e74c3c;">Finalizar Registro</button>
+                
+                <div class="result-container">
+                    <div class="result-title">Temperaturas Registradas:</div>
+                    <div class="result-content" id="heat-list">No se han registrado temperaturas</div>
+                </div>
+                
+                <div class="result-container">
+                    <div class="result-title">Resultado:</div>
+                    <div class="result-content" id="heat-result">Esperando datos...</div>
+                </div>
+                
+                <div class="plus-feature">
+                    <div class="plus-title">Plus: Mapa de Distribución de Focos de Calor</div>
+                    <p>Visualización de la distribución geográfica de los focos de calor detectados.</p>
+                    <div id="heat-map" style="margin-top: 1rem; height: 200px; background: #2c3e50; border-radius: 5px; position: relative; overflow: hidden;"></div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Medio Ambiente 4: Clasificación de residuos -->
+        <div id="environment-4" class="exercise-container">
+            <div class="exercise-header">
+                <h2 class="exercise-title">Clasificación de Residuos</h2>
+                <button class="back-button">Volver al Menú</button>
+            </div>
+            <div class="exercise-content">
+                <div class="input-group">
+                    <label for="waste-code">Código del tipo de residuo (1-4):</label>
+                    <select id="waste-code">
+                        <option value="1">1 - Orgánico</option>
+                        <option value="2">2 - Plástico</option>
+                        <option value="3">3 - Papel/Cartón</option>
+                        <option value="4">4 - Vidrio</option>
+                    </select>
+                </div>
+                <button id="classify-waste">Clasificar Residuo</button>
+                
+                <div class="result-container">
+                    <div class="result-title">Resultado:</div>
+                    <div class="result-content" id="waste-result">Esperando clasificación...</div>
+                </div>
+                
+                <div class="plus-feature">
+                    <div class="plus-title">Plus: Guía de Separación y Reciclaje</div>
+                    <p>Información detallada sobre cómo separar y reciclar correctamente cada tipo de residuo.</p>
+                    <div id="recycling-guide" class="result-content" style="margin-top: 1rem;"></div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Medio Ambiente 5: Monitoreo de niveles del río -->
+        <div id="environment-5" class="exercise-container">
+            <div class="exercise-header">
+                <h2 class="exercise-title">Monitoreo de Niveles del Río</h2>
+                <button class="back-button">Volver al Menú</button>
+            </div>
+            <div class="exercise-content">
+                <div class="input-group">
+                    <label for="river-level">Nivel del río (metros):</label>
+                    <input type="number" id="river-level" min="0" step="0.1" placeholder="Ej: 1.5, 2.8, 3.2">
+                </div>
+                <button id="add-river">Registrar Nivel</button>
+                
+                <div class="result-container">
+                    <div class="result-title">Registro de Niveles del Río:</div>
+                    <div class="result-content" id="river-list">No se han registrado niveles</div>
+                </div>
+                
+                <div class="result-container">
+                    <div class="result-title">Resultado:</div>
+                    <div class="result-content" id="river-result">Esperando datos...</div>
+                </div>
+                
+                <div class="plus-feature">
+                    <div class="plus-title">Plus: Sistema de Alertas Tempranas</div>
+                    <p>Monitoreo en tiempo real con alertas automáticas cuando se superan niveles críticos.</p>
+                    <div id="river-alerts" class="result-content" style="margin-top: 1rem;"></div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- CONTENEDORES DE EJERCICIOS DE SALUD -->
+        
+        <!-- Salud 1: Clasificación de presión arterial -->
+        <div id="health-1" class="exercise-container">
+            <div class="exercise-header">
+                <h2 class="exercise-title">Clasificación de Presión Arterial</h2>
+                <button class="back-button">Volver al Menú</button>
+            </div>
+            <div class="exercise-content">
+                <div class="input-group">
+                    <label for="systolic">Presión Sistólica (mm Hg):</label>
+                    <input type="number" id="systolic" min="50" max="250" placeholder="Ej: 120">
+                </div>
+                <div class="input-group">
+                    <label for="diastolic">Presión Diastólica (mm Hg):</label>
+                    <input type="number" id="diastolic" min="30" max="150" placeholder="Ej: 80">
+                </div>
+                <button id="check-pressure">Clasificar Presión Arterial</button>
+                
+                <div class="result-container">
+                    <div class="result-title">Resultado:</div>
+                    <div class="result-content" id="pressure-result">Esperando clasificación...</div>
+                </div>
+                
+                <div class="plus-feature">
+                    <div class="plus-title">Plus: Recomendaciones Personalizadas</div>
+                    <p>Consejos de salud específicos según la clasificación de presión arterial.</p>
+                    <div id="pressure-recommendations" class="result-content" style="margin-top: 1rem;"></div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Salud 2: Temperatura de pacientes -->
+        <div id="health-2" class="exercise-container">
+            <div class="exercise-header">
+                <h2 class="exercise-title">Temperatura de Pacientes</h2>
+                <button class="back-button">Volver al Menú</button>
+            </div>
+            <div class="exercise-content">
+                <div class="input-group">
+                    <label for="patient-count">Número de pacientes:</label>
+                    <input type="number" id="patient-count" min="1" max="20" value="5">
+                </div>
+                <button id="setup-patients">Configurar Registro</button>
+                
+                <div id="patient-inputs" style="margin-top: 1.5rem;"></div>
+                
+                <div class="result-container">
+                    <div class="result-title">Resultado:</div>
+                    <div class="result-content" id="patient-result">Esperando datos...</div>
+                </div>
+                
+                <div class="plus-feature">
+                    <div class="plus-title">Plus: Análisis de Distribución de Temperaturas</div>
+                    <p>Visualización de la distribución de temperaturas entre los pacientes registrados.</p>
+                    <div id="temperature-distribution" style="margin-top: 1rem;"></div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Salud 3: Pacientes con fiebre -->
+        <div id="health-3" class="exercise-container">
+            <div class="exercise-header">
+                <h2 class="exercise-title">Pacientes con Fiebre</h2>
+                <button class="back-button">Volver al Menú</button>
+            </div>
+            <div class="exercise-content">
+                <div class="input-group">
+                    <label for="fever-temperature">Temperatura del paciente (°C):</label>
+                    <input type="number" id="fever-temperature" min="0" step="0.1" placeholder="Ingresa 0 para terminar">
+                </div>
+                <button id="add-fever">Agregar Temperatura</button>
+                <button id="finish-fever" style="background-color: #e74c3c;">Finalizar Registro</button>
+                
+                <div class="result-container">
+                    <div class="result-title">Temperaturas Registradas:</div>
+                    <div class="result-content" id="fever-list">No se han registrado temperaturas</div>
+                </div>
+                
+                <div class="result-container">
+                    <div class="result-title">Resultado:</div>
+                    <div class="result-content" id="fever-result">Esperando datos...</div>
+                </div>
+                
+                <div class="plus-feature">
+                    <div class="plus-title">Plus: Análisis de Severidad de Fiebre</div>
+                    <p>Clasificación de la fiebre por niveles de severidad y recomendaciones específicas.</p>
+                    <div id="fever-analysis" class="result-content" style="margin-top: 1rem;"></div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Salud 4: Clasificación TRIAGE -->
+        <div id="health-4" class="exercise-container">
+            <div class="exercise-header">
+                <h2 class="exercise-title">Clasificación TRIAGE</h2>
+                <button class="back-button">Volver al Menú</button>
+            </div>
+            <div class="exercise-content">
+                <div class="input-group">
+                    <label for="triage-code">Código de TRIAGE (1-4):</label>
+                    <select id="triage-code">
+                        <option value="1">1 - Rojo (Crítico)</option>
+                        <option value="2">2 - Amarillo (Urgente)</option>
+                        <option value="3">3 - Verde (Poco Urgente)</option>
+                        <option value="4">4 - Azul (No Urgente)</option>
+                    </select>
+                </div>
+                <button id="classify-triage">Clasificar Paciente</button>
+                
+                <div class="result-container">
+                    <div class="result-title">Resultado:</div>
+                    <div class="result-content" id="triage-result">Esperando clasificación...</div>
+                </div>
+                
+                <div class="plus-feature">
+                    <div class="plus-title">Plus: Protocolos de Actuación por Categoría</div>
+                    <p>Guía de procedimientos específicos para cada categoría de TRIAGE.</p>
+                    <div id="triage-protocols" class="result-content" style="margin-top: 1rem;"></div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Salud 5: Mediciones de saturación SpO2 -->
+        <div id="health-5" class="exercise-container">
+            <div class="exercise-header">
+                <h2 class="exercise-title">Mediciones de Saturación SpO2</h2>
+                <button class="back-button">Volver al Menú</button>
+            </div>
+            <div class="exercise-content">
+                <div class="input-group">
+                    <label for="spo2-level">Nivel de saturación SpO2 (%):</label>
+                    <input type="number" id="spo2-level" min="0" max="100" placeholder="Ej: 95, 88, 100">
+                </div>
+                <button id="add-spo2">Registrar Saturación</button>
+                
+                <div class="result-container">
+                    <div class="result-title">Registro de Saturación SpO2:</div>
+                    <div class="result-content" id="spo2-list">No se han registrado saturaciones</div>
+                </div>
+                
+                <div class="result-container">
+                    <div class="result-title">Resultado:</div>
+                    <div class="result-content" id="spo2-result">Esperando datos...</div>
+                </div>
+                
+                <div class="plus-feature">
+                    <div class="plus-title">Plus: Monitoreo de Tendencia y Alertas</div>
+                    <p>Seguimiento de la tendencia de saturación y alertas automáticas para valores críticos.</p>
+                    <div id="spo2-trend" class="result-content" style="margin-top: 1rem;"></div>
+                </div>
+            </div>
+        </div>
+        
+    </div>
+    
+    <footer>
+        <p>Ejercicios Ismael Rada</p>
+    </footer>
+
+</body>
+</html>
